@@ -31,3 +31,24 @@ class Square(Rectangle):
         return (
             f"[{type(self).__name__}] ({self.id}) {self.x}/{self.y} - "
             f"{self.width}")
+
+    def update(self, *args, **kwargs):
+        """Assigns keyworded attributes"""
+        if (len(args) != 0):
+            attr = ["id", "size", "x", "y"]
+            n = 0
+            for value in args:
+                self.__setattr__(attr[n], value)
+                n += 1
+        else:
+            for key, value in kwargs.items():
+                self.__setattr__(key, value)
+
+    def to_dictionary(self):
+        """
+            Returns the dictionary representation of a Square
+        """
+        return {'id': getattr(self, "id"),
+                'x': getattr(self, "x"),
+                'size': getattr(self, "width"),
+                'y': getattr(self, "y")}
