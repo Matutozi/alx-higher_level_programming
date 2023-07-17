@@ -3,7 +3,7 @@
 """
 
 
-from models.base import base
+from models.base import Base
 
 
 import json
@@ -13,8 +13,6 @@ class Rectangle(Base):
     """Defines a rectangle class"""
     def __init__(self, width, height, x=0, y=0, id=None):
         """initializing the instance atributes"""
-        assert type(height) == int and type(x) == int and
-        type(y) == int
         super().__init__(id)
         self.width = width
         self.height = height
@@ -27,7 +25,8 @@ class Rectangle(Base):
     def width(self):
         return self.__width
 
-    @width.setter(self, value):
+    @width.setter
+    def width(self, value):
         if type(value) is not int:
             raise TypeError("Width must be an integer")
         else:
@@ -45,12 +44,14 @@ class Rectangle(Base):
     def x(self):
         return self.__x
 
-    @x.setter(self, value):
+    @x.setter
+    def x(self, value):
         self.__x = value
 
     @property
     def y(self):
         return self.__y
 
-    @y.setter(self, value):
+    @y.setter
+    def y(self, value):
         self.__y = value
