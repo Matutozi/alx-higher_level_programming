@@ -1,54 +1,65 @@
 #!/usr/bin/python3
-"""module: squares, class: Square"""
-
-
+"""Defines a Square class."""
 from models.rectangle import Rectangle
 
 
 class Square(Rectangle):
-    """Defines a square"""
+    """Represents a square."""
+
     def __init__(self, size, x=0, y=0, id=None):
-        """initialize the instance attributes"""
-        super().__init__(size, size, y, x, id)
+        """Initializes the Square
+
+        Args:
+            size (int): The size of the Square.
+            x (:obj:`int`, optional): The amount of space from the left.
+            y (:obj:`int`, optional): The amount of space up top.
+            id (:obj:`int`, optional): The Rectagle id.
+        """
+        super().__init__(size, size, x, y, id)
 
     @property
     def size(self):
-        """getter for width of square"""
+        """Gets/Sets the size of the Square."""
         return self.width
 
     @size.setter
     def size(self, value):
-        """setter for size of squares"""
-        if type(value) is not int:
-            raise TypeError("size must be an integer")
-        if value <= 0:
-            raise ValueError("size must be > 0")
         self.width = value
         self.height = value
 
-    def __str__(self):
-        """return the string representation of the object"""
-        return (
-            f"[{type(self).__name__}] ({self.id}) {self.x}/{self.y} - "
-            f"{self.width}")
-
     def update(self, *args, **kwargs):
-        """Assigns keyworded attributes"""
-        if (len(args) != 0):
-            attr = ["id", "size", "x", "y"]
-            n = 0
-            for value in args:
-                self.__setattr__(attr[n], value)
-                n += 1
+        """Updates the Square."""
+        if len(args) > 0:
+            try:
+                self.id = args[0]
+                self.size = args[1]
+                self.x = args[2]
+                self.y = args[3]
+            except IndexError:
+                pass
         else:
             for key, value in kwargs.items():
-                self.__setattr__(key, value)
+                if key == "id":
+                    self.id = value
+                elif key == "size":
+                    self.size = value
+                elif key == "x":
+                    self.x = value
+                elif key == "y":
+                    self.y = value
 
     def to_dictionary(self):
-        """
-            Returns the dictionary representation of a Square
-        """
-        return {'id': getattr(self, "id"),
-                'x': getattr(self, "x"),
-                'size': getattr(self, "width"),
-                'y': getattr(self, "y")}
+        """Returns the dictionary representation of the Square."""
+        attrbs = {}
+        for key, value in self.__dict__.items():
+            if "_" in key:
+                key = key.split("_")[-1]
+            if key in ["width", "height"]:
+                key = "size"
+            attrbs[key] = value
+        return attrbs
+
+    def __str__(self):
+        """Returns the string representation of the Square."""
+        msg = "[Square] ({}) {}/{} - {}"
+        return msg.format(self.id, self.x, self.y, self.size)
